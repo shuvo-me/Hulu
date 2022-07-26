@@ -14,6 +14,7 @@ const Thumbnail = forwardRef(({ movie }, ref) => {
         height={1080}
         width={1920}
         src={`${BASE_URL}${movie.backdrop_path || movie.poster_path}`}
+        alt="image"
       />
 
       <div>
