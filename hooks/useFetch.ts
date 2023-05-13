@@ -5,8 +5,6 @@ const useFetch = (url, method) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  console.log({ check: process.env.NEXT_PUBLIC_TMDB_ACCESS_TOKEN });
-
   const options = {
     method: method ?? "GET",
     headers: {

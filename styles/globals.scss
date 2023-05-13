@@ -1,22 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:wght@400;500;600;700;800&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
 
 @layer base {
-  body{
-
-    @apply bg-[#06202A] text-gray-300
+ html, body{
+    padding: 0;
+    margin: 0;
+    @apply bg-[#0B0C0F] text-gray-300;
+    font-family: 'Wix Madefor Text', sans-serif;
+    font-size: 10px;
   }
 }
-
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
 
 
 a {
@@ -26,4 +22,58 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-slide, .swiper-slide-prev {
+  background: transparent;
+}
+
+.swiper-button-prev, .swiper-button-next{
+  @apply bg-slate-800 h-[40px] w-[40px] rounded-full overflow-hidden p-1;
+  // background: url('/icons/prev.svg');
+}
+.swiper-button-next::after{
+  content: url('/icons/next.svg') !important;
+  display: block;
+  color: #fff;
+}
+
+.swiper-button-prev::after{
+  content: url('/icons/prev.svg') !important;
+
+}
+
+.swiper-button-prev.swiper-button-disabled{
+  display: none !important;
+}
+
+.swiper-button-next.swiper-button-disabled{
+  display: none !important;
+}
+
+.slick-slide{
+  padding: 0 30px;
 }
