@@ -27,7 +27,7 @@ export default function Header() {
         className="mySwiper"
       >
         {bannerImages?.map((img) => (
-          <SwiperSlide className="w-full h-auto relative">
+          <SwiperSlide className="w-full h-auto relative" key={img}>
             <div className="w-full min-h-[70vh] relative">
               <Image src={img} alt="img" layout="fill" />
             </div>

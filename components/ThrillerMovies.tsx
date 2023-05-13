@@ -1,5 +1,4 @@
 import useFetch from "hooks/useFetch";
-import { useRouter } from "next/router";
 import React, { useRef } from "react";
 import Thumbnail from "./Thumbnail";
 import Link from "next/link";
@@ -15,13 +14,13 @@ const NextArrow = ({ onClick }) => {
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke="currentColor"
         className="w-[2rem] h-[2rem]"
       >
         <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
         />
       </svg>
@@ -78,13 +77,13 @@ const PrevArrow = ({ onClick }) => {
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke="currentColor"
         className="w-[2rem] h-[2rem]"
       >
         <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
         />
       </svg>
@@ -93,16 +92,8 @@ const PrevArrow = ({ onClick }) => {
 };
 
 const ThrillerMovies = () => {
-  const router = useRouter();
-
   const sliderRef = useRef(null);
-  const getMovies = async () => {};
-  const { genere } = router.query;
-  const {
-    data: movies,
-    error,
-    loading,
-  } = useFetch(
+  const { data: movies } = useFetch(
     "https://api.themoviedb.org/3/discover/movie?with_genres=53",
     "GET"
   );

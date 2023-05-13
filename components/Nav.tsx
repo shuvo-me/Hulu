@@ -1,8 +1,4 @@
-import requests from "@/assets/json/requests";
-import { useRouter } from "next/router";
-
 const Nav = () => {
-  const router = useRouter();
   return (
     <nav className="fixed top-0 left-0 right-0 w-full z-[9999] py-10">
       <div className="max-w-[1270px] mx-auto px-4 flex items-center justify-between">
