@@ -108,8 +108,8 @@ const LatestMovies = () => {
       </div>
       <Slider {...settings} ref={sliderRef}>
         {movies?.map((movie) => (
-          <Link href={`/moives/${movie.id}`}>
-            <Thumbnail key={movie.id} movie={movie} />
+          <Link href={`/moives/${movie.id}`} key={movie.id}>
+            <Thumbnail movie={movie} />
           </Link>
         ))}
       </Slider>
