@@ -29,6 +29,10 @@ a {
   height: 100%;
 }
 
+.container{
+  @apply max-w-[1270px] mx-auto px-4;
+}
+
 .swiper-slide {
   text-align: center;
   font-size: 18px;
@@ -76,4 +80,45 @@ a {
 
 .slick-slide{
   padding: 0 30px;
+}
+
+.swiper-pagination{
+  @apply text-right pr-4
+}
+
+.swiper-pagination-bullet {
+	@apply h-[1rem] w-[1rem] rounded-full bg-slate-100
+}
+.swiper-pagination-bullet-active {
+	@apply bg-green-600
+}
+
+/* Define the size */
+.svg-indicator {
+  width: 100px;
+  height: 100px;
+}
+
+/* 
+ * Add the center and the radius using the size 
+ * and `stroke-width` values.
+ */
+.svg-indicator-track,
+.svg-indicator-indication {
+  cx: 50px;
+  cy: 50px;
+  r: 40px;
+  fill: transparent;
+  stroke-width: 10px;
+}
+
+/* Some color to highlight the rings */
+.svg-indicator-track {
+  stroke: #ddd;
+}
+
+.svg-indicator-indication {
+  stroke: rgb(90, 91, 91);
+  stroke-dasharray: 251.2px;
+  stroke-dashoffset: 188.4px;
 }

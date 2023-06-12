@@ -1,24 +1,39 @@
-import { GetServerSideProps } from "next";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
 import React, { useState } from "react";
+import Image from "next/image";
+import MoreLikeThis from "@/components/MoreLikeThis";
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const movieId = ctx?.query?.id || "";
-  const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}`, {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_ACCESS_TOKEN}`,
-    },
-  });
+SwiperCore.use([Pagination]);
 
-  const movieDetails = await res.json();
+export async function getServerSideProps(ctx) {
+  const query = ctx.query.query;
+
+  const res = await fetch(
+    `https://api.themoviedb.org/3/search/movie?query=${query}`,
+    {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_ACCESS_TOKEN}`,
+      },
+    }
+  );
+  const data = await res.json();
+
+  const urls = await data?.results
+    ?.filter((item: any) => !!item.backdrop_path)
+    ?.map((movie) => movie.backdrop_path);
 
   return {
-    props: { movieDetails },
+    props: {
+      movies: data?.results || [],
+      urls,
+    },
   };
-};
+}
 
-const MovieDetails = ({ movieDetails }) => {
+const Search = ({ movies, urls }) => {
   const [loved, setLoved] = useState(false);
 
   const formatNumber = (n) => {
@@ -28,48 +43,81 @@ const MovieDetails = ({ movieDetails }) => {
     if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(1) + "B";
     if (n >= 1e12) return +(n / 1e12).toFixed(1) + "T";
   };
+
+  if (!movies?.length) {
+    return <span>Not Found</span>;
+  }
   return (
-    <section className="h-[100vh] w-full">
-      <div
-        className="section-top min-h-[25vh] sm:min-h-[30vh] md:min-h-[35vh] lg:min-h-[40vh] flex justify-center items-center flex-col"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.9)), url('https://image.tmdb.org/t/p/original/${movieDetails?.backdrop_path}')`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-        }}
-      >
-        <h4 className="text-[3rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[5rem] underline">
-          {movieDetails?.title}
-        </h4>
-        <p className="text-[2.2rem] sm:text-[2.4rem] md:text-[2.6rem] lg:text-[2.8rem]">
-          {movieDetails?.tagline}
-        </p>
+    <section className="">
+      <div className="slider-area relative">
+        <Swiper
+          effect="fade"
+          spaceBetween={30}
+          centeredSlides={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            el: ".swiper-pagination",
+            clickable: true,
+          }}
+          navigation={false}
+          modules={[Autoplay, Pagination, Navigation]}
+          className="mySwiper"
+        >
+          {urls?.map((backdrop_path) => (
+            <SwiperSlide className="w-full h-auto relative" key={backdrop_path}>
+              <div className="w-full min-h-[25vh]  sm:min-h-[30vh] md:min-h-[35vh] lg:min-h-[40vh] relative">
+                <Image
+                  src={`https://image.tmdb.org/t/p/original/${backdrop_path}`}
+                  alt="img"
+                  layout="fill"
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        <div className="swiper-pagination absolute bottom-0 right-0 m-0 z-[51]"></div>
+        <div
+          className="absolute top-0 left-0 w-full h-full z-50"
+          style={{
+            background: ` linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9))`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "0 0",
+          }}
+        >
+          {/* {router?.query?.query} */}
+        </div>
       </div>
+
       <div className="container mt-[2vh]">
         <div className="flex items-center">
           <div className="movie-details">
             <div className="movie-details-top flex flex-col md:flex-row gap-10">
               <div className="movie-image flex-auto relative h-[300px] max-w-[200px] rounded-md over-flow-hidden">
                 <img
-                  src={`https://image.tmdb.org/t/p/original/${movieDetails?.poster_path}`}
+                  src={`https://image.tmdb.org/t/p/original/${movies[0]?.poster_path}`}
                   alt="movie-image"
                   className="rounded-md"
                 />
               </div>
               <div className="movie-info flex-auto">
                 <h4 className="movie-title font-bold text-[2.4rem] ">
-                  {movieDetails?.title}
+                  {movies[0]?.title}
                 </h4>
                 <div className="genres flex flex-wrap gap-2 my-[1.6rem]">
-                  {movieDetails?.genres?.map((genres) => (
-                    <span
-                      className="text-[1.4rem] px-9 py-2 bg-trasparent rounded-full border border-slate-900 text-slate-400"
-                      key={genres?.id}
-                    >
-                      {genres?.name}
-                    </span>
-                  ))}
+                  <span className="text-[1.4rem] px-9 py-2 bg-trasparent rounded-full border border-slate-900 text-slate-400">
+                    Action
+                  </span>
+                  <span className="text-[1.4rem] px-9 py-2 bg-trasparent rounded-full border border-slate-900 text-slate-400">
+                    Drama
+                  </span>
+                  <span className="text-[1.4rem] px-9 py-2 bg-trasparent rounded-full border border-slate-900 text-slate-400">
+                    Comedey
+                  </span>
                 </div>
                 <div className="buttons flex gap-3">
                   <button className="flex items-center gap-1 bg-green-600 px-[2.4rem] py-2 text-slate-200 rounded-full">
@@ -133,26 +181,26 @@ const MovieDetails = ({ movieDetails }) => {
                     </button>
 
                     <span className="text-[1.6rem]">
-                      {formatNumber(movieDetails?.popularity)}
+                      {formatNumber(movies[0]?.popularity)}
                     </span>
                   </div>
                 </div>
                 <div className="movie-details-bottom mt-[2.5rem]">
                   <h5 className="text-[1.5rem]">StoryLine.</h5>
                   <p className="text-[1.8rem] text-slate-300 mt-4">
-                    {movieDetails?.overview}
+                    {movies[0]?.overview}
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        {/* <div className="more-like-this mt-[4rem]">
+        <div className="more-like-this mt-[4rem]">
           <MoreLikeThis movies={movies} />
-        </div> */}
+        </div>
       </div>
     </section>
   );
 };
 
-export default MovieDetails;
+export default Search;

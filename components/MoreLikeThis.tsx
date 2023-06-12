@@ -1,7 +1,11 @@
-import useFetch from "hooks/useFetch";
-import React, { useRef } from "react";
-import Thumbnail from "./Thumbnail";
+import Link from "next/link";
+import React, { FC, useRef } from "react";
 import Slider from "react-slick";
+import Thumbnail from "./Thumbnail";
+
+interface MoreLikeThisProps {
+  movies: Array<any>;
+}
 
 const NextArrow = ({ onClick }) => {
   return (
@@ -90,16 +94,15 @@ const PrevArrow = ({ onClick }) => {
   );
 };
 
-const LatestMovies = () => {
+const MoreLikeThis: FC<MoreLikeThisProps> = ({ movies }) => {
   const sliderRef = useRef(null);
-  const { data: movies } = useFetch(
-    "https://api.themoviedb.org/3/trending/movie/day?language=en-US",
-    "GET"
-  );
+  if (!movies?.length) {
+    return null;
+  }
   return (
     <>
       <div className="flex justify-between items-center py-3">
-        <h4 className="text-[2rem] font-bold ">Latest Movies</h4>
+        <h4 className="text-[2rem] font-bold ">More Like This.</h4>
         <div className="flex items-center gap-5">
           <PrevArrow onClick={() => sliderRef.current.slickPrev()} />
           <NextArrow onClick={() => sliderRef.current.slickNext()} />
@@ -107,11 +110,13 @@ const LatestMovies = () => {
       </div>
       <Slider {...settings} ref={sliderRef}>
         {movies?.map((movie) => (
-          <Thumbnail movie={movie} key={movie.id} />
+          <Link href={`/moives/${movie?.id || ""}`} key={movie?.id}>
+            <Thumbnail movie={movie} />
+          </Link>
         ))}
       </Slider>
     </>
   );
 };
 
-export default LatestMovies;
+export default MoreLikeThis;
