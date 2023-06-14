@@ -1,13 +1,11 @@
-import Link from "next/link";
 import React, { FC, useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
-import Thumbnail from "./Thumbnail";
+import Actor from "./Actor";
 import SkeletonLoaderGrid from "./SkeletonLoaderGrid";
 
-interface MoreLikeThisProps {
-  movies: Array<any>;
+interface ActorListsProps {
+  actors: Array<any>;
 }
-
 const NextArrow = ({ onClick }) => {
   return (
     <button
@@ -95,14 +93,13 @@ const PrevArrow = ({ onClick }) => {
   );
 };
 
-const MoreLikeThis: FC<MoreLikeThisProps> = ({ movies }) => {
+const ActorLists: FC<ActorListsProps> = ({ actors }) => {
   const sliderRef = useRef(null);
-
   const [showSkeleton, setShowSkeleton] = useState(true);
 
   useEffect(() => {
     let timer = setTimeout(() => {
-      if (movies?.length) {
+      if (actors?.length) {
         setShowSkeleton(false);
       }
     }, 2000);
@@ -110,13 +107,13 @@ const MoreLikeThis: FC<MoreLikeThisProps> = ({ movies }) => {
     return () => {
       clearTimeout(timer);
     };
-  }, [movies]);
+  }, [actors]);
 
   if (showSkeleton) {
     return (
       <>
         <div className="flex justify-between items-center py-3">
-          <h4 className="text-[2rem] font-bold ">More Like This.</h4>
+          <h4 className="text-[2rem] font-bold ">Actors of this movie.</h4>
         </div>
         <div>
           <SkeletonLoaderGrid />
@@ -127,21 +124,19 @@ const MoreLikeThis: FC<MoreLikeThisProps> = ({ movies }) => {
   return (
     <>
       <div className="flex justify-between items-center py-3">
-        <h4 className="text-[2rem] font-bold ">More Like This.</h4>
+        <h4 className="text-[2rem] font-bold ">Actors of this movie.</h4>
         <div className="flex items-center gap-5">
           <PrevArrow onClick={() => sliderRef.current.slickPrev()} />
           <NextArrow onClick={() => sliderRef.current.slickNext()} />
         </div>
       </div>
       <Slider {...settings} ref={sliderRef}>
-        {movies?.map((movie) => (
-          <Link href={`/moives/${movie?.id || ""}`} key={movie?.id}>
-            <Thumbnail movie={movie} />
-          </Link>
+        {actors?.map((actor) => (
+          <Actor actor={actor} key={actor?.id} />
         ))}
       </Slider>
     </>
   );
 };
 
-export default MoreLikeThis;
+export default ActorLists;
