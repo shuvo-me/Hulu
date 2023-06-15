@@ -3,14 +3,7 @@ import Image from "next/image";
 import React, { FC, useEffect, useRef, useState } from "react";
 
 interface ProfileDropDownProps {
-  session: {
-    expires: string;
-    user: {
-      name: string;
-      image: string;
-      email: string;
-    };
-  };
+  session: any;
 }
 
 const ProfileDropDown: FC<ProfileDropDownProps> = ({ session }) => {
