@@ -1,8 +1,7 @@
 import ActorLists from "@/components/ActorLists";
 import MovieDetailsTopContent from "@/components/MovieDetailsTopContent";
-import SkeletonLoaderGrid from "@/components/SkeletonLoaderGrid";
 import { GetServerSideProps } from "next";
-import React, { useState } from "react";
+import React from "react";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const movieId = ctx?.query?.id || "";

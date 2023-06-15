@@ -1,7 +1,8 @@
 import { ThumbUpIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import Link from "next/link";
-import { FC, forwardRef } from "react";
+import { FC, forwardRef, useEffect, useState } from "react";
+import MovieWithTitleSkeleton from "./MovieWithTitleSkeleton";
 
 interface ThumbnailProps {
   movie: {
@@ -17,8 +18,25 @@ interface ThumbnailProps {
   };
 }
 
+const BASE_URL = "https://image.tmdb.org/t/p/original/";
 const Thumbnail: FC<ThumbnailProps> = forwardRef(({ movie }) => {
-  const BASE_URL = "https://image.tmdb.org/t/p/original/";
+  const [showSkeleton, setShowSkeleton] = useState(true);
+
+  useEffect(() => {
+    let timer = setTimeout(() => {
+      if (movie) {
+        setShowSkeleton(false);
+      }
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [movie]);
+
+  if (showSkeleton) {
+    return <MovieWithTitleSkeleton />;
+  }
   return (
     <Link href={`/movies/${movie.id}`}>
       <div className="p-2 group cursor-pointer transition duration-200 ease-in transform hover:z-50 sm:hover:scale-105">

@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import MoreLikeThis from "@/components/MoreLikeThis";
 import SearchMovieDetailsTop from "@/components/SearchMovieDetailsTop";

@@ -7,8 +7,9 @@ import "../styles/globals.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NextProgress from "next-progress";
+import { SessionProvider } from "next-auth/react";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <>
       <NextProgress
@@ -16,8 +17,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         options={{ showSpinner: false }}
         color="#22c55e"
       />
-      <Nav />
-      <Component {...pageProps} />
+      <SessionProvider session={session}>
+        <Nav />
+        <Component {...pageProps} />
+      </SessionProvider>
     </>
   );
 }
